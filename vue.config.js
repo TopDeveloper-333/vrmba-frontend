@@ -10,5 +10,7 @@ module.exports = {
         '~': path.join(__dirname, './src/js')
       }
     }  
-  }
+  },
+
+  lintOnSave: false
 }

@@ -24,7 +24,5 @@ export default [
       { path: 'password', name: 'settings.password', component: page('settings/password.vue') }
     ]
   },
-
-  { path: '/meeting', name: 'meeting', component: page('meeting/meeting.vue') },
   { path: '*', component: page('errors/404.vue') }
 ]

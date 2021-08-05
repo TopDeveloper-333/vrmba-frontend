@@ -12,6 +12,10 @@ Vue.use(VCalendar);
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
+// new Vue({
+//   render: h => h(App)
+// })
+
 new Vue({
   i18n,
   store,

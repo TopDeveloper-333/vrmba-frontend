@@ -10,6 +10,7 @@
 
 <script>
 import Loading from './Loading'
+import config from '../../config';
 
 // Load layout components dynamically.
 const requireContext = require.context('~/layouts', false, /.*\.vue$/)
@@ -36,15 +37,14 @@ export default {
   }),
 
   metaInfo () {
-    const { appName } = window.config
-
     return {
-      title: appName,
-      titleTemplate: `%s · ${appName}`
+      title: config.appName,
+      titleTemplate: `%s`
     }
   },
 
   mounted () {
+    console.log("App component is mounted");
     this.$loading = this.$refs.loading
   },
 

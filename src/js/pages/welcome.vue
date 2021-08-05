@@ -18,7 +18,7 @@
 
     <div class="text-center">
       <div class="title mb-4">
-        <img src="http://localhost:8000/black/img/title-avatar.png" alt="VRMBA">
+        <img src="black/img/title-avatar.png" alt="VRMBA">
       </div>
 
     </div>
@@ -27,6 +27,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import config from '../../config';
 
 export default {
   layout: 'basic',
@@ -36,7 +37,7 @@ export default {
   },
 
   data: () => ({
-    title: window.config.appName
+    title: config.appName
   }),
 
   computed: mapGetters({

@@ -24,7 +24,7 @@
     "sass-loader": "10.1.1",
     "sweetalert2": "^11.1.2",
     "v-calendar": "^2.3.2",
-    "vform": "^2.1.1",
+    "vform": "^1.0.1",
     "vue": "^2.6.11",
     "vue-i18n": "^8.25.0",
     "vue-meta": "^2.4.0",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-eslint": "^4.5.13",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",

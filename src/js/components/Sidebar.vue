@@ -2,7 +2,7 @@
 <div id="sidebar" v-if="user" class="sidebar">
     <div class="sidebar-wrapper">
         <div class="logo">
-            <img src="http://localhost:8000/black/img/title-avatar.png" alt="bonVR" data-nsfw-filter-status="sfw" style="visibility: visible; margin-top:20px; margin-left:20px">
+            <img src="black/img/title-avatar.png" alt="bonVR" data-nsfw-filter-status="sfw" style="visibility: visible; margin-top:20px; margin-left:20px">
         </div>
         <div>
             <ul class="nav sidebar-nav" id="menuList">
@@ -63,10 +63,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import config from '../../config';
 
 export default {
   data: () => ({
-    appName: window.config.appName
+    appName: config.appName
   }),
   computed: mapGetters({
     user: 'auth/user'

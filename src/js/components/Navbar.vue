@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-absolute">
     <div class="container">
       <router-link v-if="!user" :to="{ name: user ? 'home' : 'welcome' }" class="navbar-brand">
-        <img src="http://localhost:8000/black/img/title-avatar.png" alt="bonVR" >
+        <img src="black/img/title-avatar.png" alt="bonVR" >
       </router-link>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false">
@@ -54,13 +54,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import config from '../../config';
 
 export default {
   components: {
   },
 
   data: () => ({
-    appName: window.config.appName
+    appName: config.appName
   }),
 
   computed: mapGetters({
