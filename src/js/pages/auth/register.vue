@@ -62,6 +62,7 @@
 
 <script>
 import Form from 'vform'
+import firebase from "firebase";
 
 export default {
   components: {
@@ -84,26 +85,35 @@ export default {
   }),
 
   methods: {
-    async register () {
-      // Register the user.
-      const { data } = await this.form.post('/api/register')
+    register () {
+      debugger;
+      firebase.auth().createUserWithEmailAndPassword(this.form.email, this.form.password)
+        .then(data => {
+          console.log("success");
+        })
+        .catch(err => {
+          console.log(err.message);
+        });
 
-      // Must verify email fist.
-      if (data.status) {
-        this.mustVerifyEmail = true
-      } else {
-        // Log in the user.
-        const { data: { token } } = await this.form.post('/api/login')
+      // // Register the user.
+      // const { data } = await this.form.post('/api/register')
 
-        // Save the token.
-        this.$store.dispatch('auth/saveToken', { token })
+      // // Must verify email fist.
+      // if (data.status) {
+      //   this.mustVerifyEmail = true
+      // } else {
+      //   // Log in the user.
+      //   const { data: { token } } = await this.form.post('/api/login')
 
-        // Update the user.
-        await this.$store.dispatch('auth/updateUser', { user: data })
+      //   // Save the token.
+      //   this.$store.dispatch('auth/saveToken', { token })
 
-        // Redirect home.
-        this.$router.push({ name: 'home' })
-      }
+      //   // Update the user.
+      //   await this.$store.dispatch('auth/updateUser', { user: data })
+
+      //   // Redirect home.
+      //   this.$router.push({ name: 'home' })
+      // }
     }
   }
 }

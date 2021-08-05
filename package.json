@@ -17,6 +17,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
     "core-js": "^3.6.5",
+    "firebase": "^8.8.1",
     "jquery": "^3.6.0",
     "js-cookie": "^3.0.0",
     "popper.js": "^1.16.1",
