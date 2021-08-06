@@ -21,7 +21,7 @@ export const actions = {
 
   async fetchAllMeeting ({ commit }) {
     try {
-      const { data } = await axios.get('/api/meeting')
+      const { data } = await axios.get( config.apiPath + 'meeting')
 
     } catch (e) {
 

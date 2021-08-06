@@ -63,7 +63,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import config from '../../config';
+import config from '../../config'
+import firebase from 'firebase'
 
 export default {
   data: () => ({
@@ -74,11 +75,14 @@ export default {
   }),
   methods: {
     async logout () {
-      // Log out the user.
-      await this.$store.dispatch('auth/logout')
+        await firebase.auth().signOut();
 
-      // Redirect to login.
-      this.$router.push({ name: 'login' })
+        // Log out the user.
+        await this.$store.dispatch('auth/logout')
+
+        // Redirect to login.
+        this.$router.push({ name: 'login' })
+
     },
     onMenuSelected: function(event){
         // console.log(event);

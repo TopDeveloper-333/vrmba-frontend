@@ -35,7 +35,7 @@ const qs = (params) => Object.keys(params).map(key => `${key}=${params[key]}`).j
 export default {
   async beforeRouteEnter (to, from, next) {
     try {
-      const { data } = await axios.post(`/api/email/verify/${to.params.id}?${qs(to.query)}`)
+      const { data } = await axios.post( config.apiPath + `email/verify/${to.params.id}?${qs(to.query)}`)
 
       next(vm => { vm.success = data.status })
     } catch (e) {

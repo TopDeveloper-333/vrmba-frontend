@@ -9,7 +9,6 @@ export default [
   { path: '/register', name: 'register', component: page('auth/register.vue') },
   { path: '/register/success', name: 'register.success', component: page('auth/register/success.vue') },  
 
-
   { path: '/password/reset', name: 'password.request', component: page('auth/password/email.vue') },
   { path: '/password/reset/:token', name: 'password.reset', component: page('auth/password/reset.vue') },
   { path: '/email/verify/:id', name: 'verification.verify', component: page('auth/verification/verify.vue') },

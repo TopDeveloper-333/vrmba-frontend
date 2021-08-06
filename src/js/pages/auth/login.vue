@@ -56,6 +56,7 @@
 <script>
 import Form from 'vform'
 import Cookies from 'js-cookie'
+import firebase from 'firebase'
 
 export default {
   components: {
@@ -76,21 +77,33 @@ export default {
   }),
 
   methods: {
-    async login () {
-      // Submit the form.
-      const { data } = await this.form.post('/api/login')
+    login () {
+      firebase.auth().signInWithEmailAndPassword(this.form.email, this.form.password)
+        .then(data => {
 
-      // Save the token.
-      this.$store.dispatch('auth/saveToken', {
-        token: data.token,
-        remember: this.remember
-      })
+          const user = data.user;
+          user.getIdToken()
+            .then(idToken => {
 
-      // Fetch the user.
-      await this.$store.dispatch('auth/fetchUser')
+              // Save the token.
+              this.$store.dispatch('auth/saveToken', {
+                token: idToken,
+                user: user
+              })
 
-      // Redirect home.
-      this.redirect()
+              // Redirect home.
+              // window.location.assign('/home')
+              this.redirect()
+
+            })
+            .catch(err => {
+              alert(err.message);
+            });
+        })
+        .catch(err => {
+          alert(err.message);
+        });
+
     },
 
     redirect () {

@@ -1,6 +1,9 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import * as types from '../mutation-types'
+import config from "../../../config"
+
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 // state
 export const state = {
@@ -17,9 +20,10 @@ export const getters = {
 
 // mutations
 export const mutations = {
-  [types.SAVE_TOKEN] (state, { token, remember }) {
+  [types.SAVE_TOKEN] (state, { token, user }) {
     state.token = token
-    Cookies.set('token', token, { expires: remember ? 365 : null })
+    state.user = user
+    Cookies.set('token', token, { expires: 1/48 })
   },
 
   [types.FETCH_USER_SUCCESS] (state, { user }) {
@@ -49,14 +53,25 @@ export const actions = {
     commit(types.SAVE_TOKEN, payload)
   },
 
-  async fetchUser ({ commit }) {
-    try {
-      const { data } = await axios.get('/api/user')
+  fetchUser ({ commit }) {
+    // try {
 
-      commit(types.FETCH_USER_SUCCESS, { user: data })
-    } catch (e) {
-      commit(types.FETCH_USER_FAILURE)
-    }
+      axios.post(config.apiPath + 'user')
+        .then((response) => {
+          console.log(response);
+          commit(types.FETCH_USER_SUCCESS, { user: response.data })
+        }, (err) =>{
+          console.log(err);
+          commit(types.FETCH_USER_SUCCESS, { user: null })
+        });
+
+      // const { data } = await axios.post( config.apiPath + 'user')
+
+    //   commit(types.FETCH_USER_SUCCESS, { user: data })
+    // } catch (e) {
+    //   commit(types.FETCH_USER_FAILURE)
+    // }
+    
   },
 
   updateUser ({ commit }, payload) {
@@ -64,16 +79,7 @@ export const actions = {
   },
 
   async logout ({ commit }) {
-    try {
-      await axios.post('/api/logout')
-    } catch (e) { }
-
     commit(types.LOGOUT)
   },
 
-  async fetchOauthUrl (ctx, { provider }) {
-    const { data } = await axios.post(`/api/oauth/${provider}`)
-
-    return data.url
-  }
 }
