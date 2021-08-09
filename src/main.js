@@ -24,7 +24,13 @@ const firebaseConfig = {
   measurementId: "G-2EPN5KXG82"
 };
 
+//
+// Test with Firebase Auth emulator
+//
+
 firebase.initializeApp(firebaseConfig)
+const auth = firebase.auth();
+auth.useEmulator("http://localhost:9099");
 
 /* eslint-disable no-new */
 // new Vue({
