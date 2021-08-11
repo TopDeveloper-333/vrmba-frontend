@@ -145,6 +145,7 @@
 </template>
 <script>
 import Form from 'vform'
+import store from '~/store'
 
 export default {
 
@@ -180,8 +181,9 @@ export default {
             this.form.duration = this.form.durationHr + ":" + this.form.durationMin + ":00" 
 
             try {
-                const { data } = await this.form.post('/api/meeting')
-                console.log(data)
+                console.log('OnSave is called')
+                const meeting = this.form
+                const data = await store.dispatch('meeting/schedule', {meeting})
                 this.$router.push({ name: 'meeting', params: { } })                
             }
             catch (ex) {
