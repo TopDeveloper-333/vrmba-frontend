@@ -1,6 +1,6 @@
 <template>
   <div id="CustomCalendar">
-    <v-calendar/>
+    <vc-calendar is-dark is-range is-expanded ref="calendar" :attributes='attributes'/>
   </div>
 </template>
 <script>
@@ -10,6 +10,10 @@ import VCalendar from 'v-calendar'
 export default{
   components:{
     VCalendar
+  },
+  data() {
+    return {
+    }
   }
 
 }

@@ -36,6 +36,7 @@
                         <label class="col-md-3 col-form-label text-md-left">Duration</label>
                         <div class="col-md-3">
                             <select class="form-control" name="durationHr" v-model="form.durationHr">
+                                <option value="0">0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -129,6 +130,14 @@
                         </div>
                     </div>
 
+                    <!-- Invitation -->
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label text-md-left">User Invitation</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" placeholder="Email" name="userInvitation" v-model="form.userInvitation">
+                        </div>
+                    </div>
+
                     <!-- Save/Cancel -->
                     <div class="form-group row">
                         <div class="col-md-7 offset-md-3 d-flex">
@@ -143,6 +152,7 @@
     </div>
 </div>
 </template>
+
 <script>
 import Form from 'vform'
 import store from '~/store'
@@ -169,6 +179,7 @@ export default {
             meetingLink:"",
             hostVideo: 1,
             participantVideo:1,
+            userInvitation:""
         }),
     }),
     mounted() {
@@ -180,9 +191,18 @@ export default {
             this.form.when = this.form.whenDate + " " + this.form.whenTime
             this.form.duration = this.form.durationHr + ":" + this.form.durationMin + ":00" 
 
+            const meeting = this.form
+            if (meeting.topic == undefined || meeting.topic == "") {
+                alert("Please input the 'topic' field."); return;
+            }
+            if (meeting.whenDate == undefined || meeting.whenDate == "" || meeting.whenTime == undefined || meeting.whenTime == "") {
+                alert("Please input the 'when' field."); return;
+            }
+            if (meeting.durationHr == undefined || meeting.durationHr == "" || meeting.durationMin == undefined || meeting.durationMin == "") {
+                alert("Please input the 'Duration' field."); return;
+            }
+
             try {
-                console.log('OnSave is called')
-                const meeting = this.form
                 const data = await store.dispatch('meeting/schedule', {meeting})
                 this.$router.push({ name: 'meeting', params: { } })                
             }

@@ -10,7 +10,9 @@ import AxiosPlugin from 'vue-axios-cors';
 import '~/plugins'
 import '~/components'
 
-Vue.use(VCalendar);
+Vue.use(VCalendar, {
+  componentPrefix: 'vc',
+});
 Vue.use(AxiosPlugin);
 Vue.config.productionTip = false
 
