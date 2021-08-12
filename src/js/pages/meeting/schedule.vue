@@ -134,7 +134,8 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label text-md-left">User Invitation</label>
                         <div class="col-md-8">
-                            <input class="form-control" type="text" placeholder="Email" name="userInvitation" v-model="form.userInvitation">
+                            <div id="emails-input"></div>
+                            <!-- <input class="form-control" type="text" placeholder="Email" name="userInvitation" v-model="form.userInvitation"> -->
                         </div>
                     </div>
 
@@ -181,8 +182,15 @@ export default {
             participantVideo:1,
             userInvitation:""
         }),
+        emailsInput: {}
     }),
     mounted() {
+
+        debugger
+        
+        const inputContainerNode = document.querySelector('#emails-input');
+        this.emailsInput = EmailsInput(inputContainerNode);
+
         this.form.passcode = this.genPasscode();
         this.form.meetingLink = this.genMeetingLink();
     },
@@ -190,6 +198,7 @@ export default {
         onSave: async function(event) {
             this.form.when = this.form.whenDate + " " + this.form.whenTime
             this.form.duration = this.form.durationHr + ":" + this.form.durationMin + ":00" 
+            this.form.userInvitation = this.emailsInput.getEmailsList()
 
             const meeting = this.form
             if (meeting.topic == undefined || meeting.topic == "") {
