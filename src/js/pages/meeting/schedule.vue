@@ -185,8 +185,6 @@ export default {
         emailsInput: {}
     }),
     mounted() {
-
-        debugger
         
         const inputContainerNode = document.querySelector('#emails-input');
         this.emailsInput = EmailsInput(inputContainerNode);
