@@ -2,30 +2,18 @@
   <div id="CustomCalendar">
     <vc-calendar is-dark is-range is-expanded :attributes='attrs'/>
     <ul class="timeline">
-        <li class="timeline-inverted">
-          <div class="timeline-badge">Today 13</div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4 class="timeline-title">Test Topic</h4>
-              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 10:00 AM - 11:30 AM</small></p>
-            </div>
-            <div class="timeline-body">
-              <p>this is optional description</p>
-            </div>
+      <li class="timeline-inverted" v-for="timeline in timelines" v-bind:key="timeline.when">
+        <div class="timeline-badge">{{timeline.dates}}</div>
+        <div class="timeline-panel" v-bind:style="{background: timeline.background, border:0}">
+          <div class="timeline-heading">
+            <h4 class="timeline-title" v-bind:style="{color:timeline.titlecolor}"><b>{{timeline.title}}</b></h4>
+            <p><small v-bind:style="{color:timeline.color}"><i class="glyphicon glyphicon-time"></i>{{timeline.duration}}</small></p>
           </div>
-        </li>
-        <li class="timeline-inverted">
-          <div class="timeline-badge">OCT 21</div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4 class="timeline-title">Mussum ipsum cacilds</h4>
-            </div>
-            <div class="timeline-body">
-              <p>Mussum ipsum cacilds,</p>
-              <p>Suco de cevadiss, é um leite divinis.</p>
-            </div>
+          <div class="timeline-body">
+            <p v-bind:style="{color:timeline.color}">{{timeline.description}}</p>
           </div>
-        </li>
+        </div>
+      </li>
     </ul>
   </div>
 </template>
@@ -54,11 +42,24 @@ export default{
         {
           key: 'today',
           highlight:{
+            style:{
+              background: '#ff8080'
+            },
             color: 'purple',
             fillMode: 'light'
           },
           dates: new Date(),
         },
+      ],
+      timelines: [
+        {
+          when: '2020-10-21 10:30',
+          dates: 'Today 13',
+          title: 'Test Topic',
+          duration: '10:00 AM ~ 11:30 AM',
+          description: 'This is optional description'
+        }
+
       ],
     };
   },
@@ -71,18 +72,43 @@ export default{
     meetings: {
       handler: function(mine) {
         this.attrs = []
+        this.timelines = []
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
-        console.log("Watch meetings: " + JSON.stringify(mine))
         var invited = JSON.parse(JSON.stringify(mine.invited))
         for (const w in invited) {
           var attr = {}
           attr.key = invited[w].topic
-          attr.highlight = {}
-          attr.highlight.color = 'purple'
+          attr.highlight = {}          
+          // attr.highlight.color = 'purple'
           attr.highlight.fillMode = 'light'
+          attr.highlight.style = {}
+          attr.highlight.style.background = '#2af597'
           attr.dates = new Date(w)
-
           this.attrs.push(attr)
+
+          var dd = new Date(w)
+          var today = new Date()
+
+          if (dd >= today) 
+          {
+            var timeline = {}
+            if ((dd.getMonth() == today.getMonth()) && (dd.getDate() == today.getDate()))
+              timeline.dates = "Today " + today.getDate()
+            else
+              timeline.dates = monthNames[dd.getMonth()] + ' ' + dd.getDate()
+
+            timeline.when = invited[w].when
+            timeline.title = invited[w].topic
+            timeline.duration = "Start Time: " + dd.getHours() + ":" + dd.getMinutes() + ", Duration: " + invited[w].duration
+            timeline.description = invited[w].description
+            timeline.background = '#2af597'
+            timeline.titlecolor = 'black'
+            timeline.subtitlecolor = 'black'
+            timeline.color = 'black'
+            this.timelines.push(timeline)
+          }
+
         }
 
         var created = JSON.parse(JSON.stringify(mine.meetings))
@@ -90,12 +116,46 @@ export default{
           var attr = {}
           attr.key = created[ww].topic
           attr.highlight = {}
-          attr.highlight.color = 'green'
+          // attr.highlight.color = 'green'
           attr.highlight.fillMode = 'light'
+          attr.highlight.style = {}
+          attr.highlight.style.background = '#f92c84'
           attr.dates = new Date(ww)
-
           this.attrs.push(attr)
+
+          var dd = new Date(ww)
+          var today = new Date()
+
+          console.log(dd.getTime())
+
+          if (dd >= today) 
+          {
+            var timeline = {}
+            if ((dd.getMonth() == today.getMonth()) && (dd.getDate() == today.getDate()))
+              timeline.dates = "Today " + today.getDate()
+            else
+              timeline.dates = monthNames[dd.getMonth()] + ' ' + dd.getDate()
+
+            timeline.when = created[ww].when
+            timeline.title = created[ww].topic
+            timeline.duration = "Start Time: " + dd.getHours() + ":" + dd.getMinutes() + ", Duration: " + created[ww].duration
+            timeline.description = created[ww].description
+            timeline.background = '#f92c84'
+            timeline.titlecolor = 'white'
+            timeline.subtitlecolor = 'white'
+            timeline.color = 'white'
+            this.timelines.push(timeline)
+          }
         }
+
+        //
+        // Sort timeline
+        //
+        this.timelines.sort(function(a,b) {
+          var aa = new Date(a.when)
+          var bb = new Date(b.when)
+          return aa - bb
+        })
       }
     },
   },
