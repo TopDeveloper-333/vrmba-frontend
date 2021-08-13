@@ -58,10 +58,8 @@ export const actions = {
 
       axios.post(config.apiPath + 'user')
         .then((response) => {
-          console.log(response);
           commit(types.FETCH_USER_SUCCESS, { user: response.data })
         }, (err) =>{
-          console.log(err);
           commit(types.FETCH_USER_SUCCESS, { user: null })
         });
 

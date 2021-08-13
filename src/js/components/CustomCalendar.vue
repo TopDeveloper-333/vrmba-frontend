@@ -1,6 +1,6 @@
 <template>
   <div id="CustomCalendar">
-    <vc-calendar is-dark is-range is-expanded :attributes='meetings'/>
+    <vc-calendar is-dark is-range is-expanded :attributes='attrs'/>
   </div>
 </template>
 <style scoped>
@@ -43,11 +43,35 @@ export default{
   },
   watch: {
     meetings: {
-      handler: function(nv) {
-        console.log("Watch meetings: " + JSON.stringify(nv))
-        //
-        // Here I am: to update calendar's attrs
-        //
+      handler: function(mine) {
+        debugger
+        console.log(this.attrs)
+        this.attrs = []
+
+        console.log("Watch meetings: " + JSON.stringify(mine))
+        var invited = JSON.parse(JSON.stringify(mine.invited))
+        for (const w in invited) {
+          var attr = {}
+          attr.key = invited[w].topic
+          attr.highlight = {}
+          attr.highlight.color = 'purple'
+          attr.highlight.fillMode = 'light'
+          attr.dates = new Date(w)
+
+          this.attrs.push(attr)
+        }
+
+        var created = JSON.parse(JSON.stringify(mine.meetings))
+        for (const ww in created) {
+          var attr = {}
+          attr.key = created[ww].topic
+          attr.highlight = {}
+          attr.highlight.color = 'red'
+          attr.highlight.fillMode = 'light'
+          attr.dates = new Date(ww)
+
+          this.attrs.push(attr)
+        }
       }
     },
   },
