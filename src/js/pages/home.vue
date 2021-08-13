@@ -38,6 +38,7 @@
 
 <script>
 import CustomCalendar from '~/components/CustomCalendar'
+
 export default {
   middleware: 'auth',
 

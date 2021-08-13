@@ -9,7 +9,7 @@ export const state = {
 }
 
 // getters
-export const getter = {
+export const getters = {
   meetings: state => state.meetings
 }
 
@@ -21,6 +21,12 @@ export const mutations = {
   [types.SCHEDULE_MEETING_FAILURE] (state) {
 
   },
+  [types.GET_MY_MEETINGS_SUCCESS] (state, data) {
+    state.meetings = data
+  },
+  [types.GET_MY_MEETINGS_FAILURE] (state) {
+
+  }
 
 }
 
@@ -30,22 +36,18 @@ export const actions = {
   async fetchAll({ commit }) {
     try {
       const { data } = await axios.get( config.apiPath + 'meeting')
-
+      commit(types.GET_MY_MEETINGS_SUCCESS, data)
     } catch (e) {
-
+      commit(types.GET_MY_MEETINGS_FAILURE)
     }
   },
 
   async schedule({ commit }, meeting) {
     try {
-      console.log('Action: meeting/schedule is called: ' + config.apiPath + 'meeting')
-      
       const { data } = await axios.post( config.apiPath + 'meeting', meeting)
-
-      console.log(data)
-
+      commit(types.SCHEDULE_MEETING_SUCCESS, {})
     } catch (e) {
-
+      commit(types.SCHEDULE_MEETING_FAILURE)
     }
   }
 
