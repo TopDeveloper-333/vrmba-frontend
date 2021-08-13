@@ -5,7 +5,7 @@ import i18n from '~/plugins/i18n'
 import VCalendar from 'v-calendar'
 import App from '~/components/App'
 import firebase from 'firebase'
-import AxiosPlugin from 'vue-axios-cors';
+import AxiosPlugin from 'vue-axios-cors'
 
 import '~/plugins'
 import '~/components'
@@ -14,6 +14,7 @@ Vue.use(VCalendar, {
   componentPrefix: 'vc',
 });
 Vue.use(AxiosPlugin);
+
 Vue.config.productionTip = false
 
 const firebaseConfig = {

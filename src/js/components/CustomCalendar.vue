@@ -1,6 +1,32 @@
 <template>
   <div id="CustomCalendar">
     <vc-calendar is-dark is-range is-expanded :attributes='attrs'/>
+    <ul class="timeline">
+        <li class="timeline-inverted">
+          <div class="timeline-badge">Today 13</div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">Test Topic</h4>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 10:00 AM - 11:30 AM</small></p>
+            </div>
+            <div class="timeline-body">
+              <p>this is optional description</p>
+            </div>
+          </div>
+        </li>
+        <li class="timeline-inverted">
+          <div class="timeline-badge">OCT 21</div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">Mussum ipsum cacilds</h4>
+            </div>
+            <div class="timeline-body">
+              <p>Mussum ipsum cacilds,</p>
+              <p>Suco de cevadiss, é um leite divinis.</p>
+            </div>
+          </div>
+        </li>
+    </ul>
   </div>
 </template>
 <style scoped>
@@ -44,8 +70,6 @@ export default{
   watch: {
     meetings: {
       handler: function(mine) {
-        debugger
-        console.log(this.attrs)
         this.attrs = []
 
         console.log("Watch meetings: " + JSON.stringify(mine))
@@ -66,7 +90,7 @@ export default{
           var attr = {}
           attr.key = created[ww].topic
           attr.highlight = {}
-          attr.highlight.color = 'red'
+          attr.highlight.color = 'green'
           attr.highlight.fillMode = 'light'
           attr.dates = new Date(ww)
 
