@@ -21,6 +21,7 @@
 .vc-container.vc-is-dark {
   background: transparent !important;
   color: grey !important;
+  border: 0px;
 }
 .vc-is-dark .vc-weekday{
     color: darkgrey !important;
