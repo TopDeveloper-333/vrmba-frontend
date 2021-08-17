@@ -1,10 +1,13 @@
 <template>
 <div id="sidebar" v-if="user" class="sidebar">
-    <div class="sidebar-wrapper">
         <div class="logo">
-            <img src="black/img/title-avatar.png" alt="bonVR" data-nsfw-filter-status="sfw" style="visibility: visible; margin-top:20px; margin-left:20px">
+            <img src="black/img/title-avatar.png" alt="bonVR" data-nsfw-filter-status="sfw" id="logoImage"
+            style="visibility: visible; margin-top:20px; margin-left:20px; margin-right:20px">
+            <img src="black/img/notitle-avatar.png" alt="bonVR" data-nsfw-filter-status="sfw" id="logoImage-notitle"
+            style="visibility: visible; margin-top:20px; display:none">
         </div>
-        <div>
+    <div class="sidebar-wrapper">
+        <div class="navigation_wrapper">
             <ul class="nav sidebar-nav" id="menuList">
                 <div style="height:60px"></div>
                 <li v-on:click="onMenuSelected($event)" id="Dashboard" class="active">
@@ -72,8 +75,16 @@
 
 <style scoped>
 .nav_label {
-    display:inline
+    display:inline;
+    margin-left:10px
 }
+.sidebar{
+    transition:width 0.5s;
+}
+.sidebar{
+    width:fit-content;
+}
+
 </style>
 
 <script>
@@ -106,6 +117,18 @@ export default {
             menulist[i].classList.remove('active');
         }
         event.target.closest("li").classList.add('active');
+        var selected = event.target.closest("li")
+        if (selected.id == "Settings") {
+            $('.nav_label').addClass('animated fadeIn').hide();
+            document.getElementById("logoImage").style.display = "none";
+            document.getElementById("logoImage-notitle").style.display = "block";
+        }
+        else {
+            $('.nav_label').addClass('animated fadeIn').show();
+            document.getElementById("logoImage").style.display = "block";
+            document.getElementById("logoImage-notitle").style.display = "none";
+        }
+
     },
   }
 }
