@@ -40,27 +40,8 @@ export default{
   data() {
     return {
       attrs: [
-        {
-          key: 'today',
-          highlight:{
-            style:{
-              background: '#ff8080'
-            },
-            color: 'purple',
-            fillMode: 'light'
-          },
-          dates: new Date(),
-        },
       ],
       timelines: [
-        {
-          when: '2020-10-21 10:30',
-          dates: 'Today 13',
-          title: 'Test Topic',
-          duration: '10:00 AM ~ 11:30 AM',
-          description: 'This is optional description'
-        }
-
       ],
     };
   },
@@ -126,8 +107,6 @@ export default{
 
           var dd = new Date(ww)
           var today = new Date()
-
-          console.log(dd.getTime())
 
           if (dd >= today) 
           {

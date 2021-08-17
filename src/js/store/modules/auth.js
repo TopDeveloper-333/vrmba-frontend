@@ -27,6 +27,7 @@ export const mutations = {
   },
 
   [types.FETCH_USER_SUCCESS] (state, { user }) {
+    console.log('PASS FETCH_USER_SUCCESS')
     state.user = user
   },
 
