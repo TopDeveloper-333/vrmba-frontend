@@ -22,13 +22,13 @@
             </a>
             <div class="dropdown-menu">
               <router-link :to="{ name: 'settings.profile' }" class="dropdown-item pl-3">
-                <fa icon="cog" fixed-width />
+                <font-awesome-icon icon="cog" fixed-width />
                 {{ $t('settings') }}
               </router-link>
 
               <div class="dropdown-divider" />
               <a href="#" class="dropdown-item pl-3" @click.prevent="logout">
-                <fa icon="sign-out-alt" fixed-width />
+                <font-awesome-icon icon="sign-out-alt" fixed-width />
                 {{ $t('logout') }}
               </a>
             </div>

@@ -1,11 +1,11 @@
 <template>
 <div id="sidebar" v-if="user" class="sidebar">
-        <div class="logo">
-            <img src="black/img/title-avatar.png" alt="bonVR" data-nsfw-filter-status="sfw" id="logoImage"
-            style="visibility: visible; margin-top:20px; margin-left:20px; margin-right:20px">
-            <img src="black/img/notitle-avatar.png" alt="bonVR" data-nsfw-filter-status="sfw" id="logoImage-notitle"
-            style="visibility: visible; margin-top:20px; display:none">
-        </div>
+    <div class="logo">
+        <img src="black/img/title-avatar.png" alt="bonVR" data-nsfw-filter-status="sfw" id="logoImage"
+        style="visibility: visible; margin-top:20px; margin-left:20px; margin-right:20px">
+        <img src="black/img/notitle-avatar.png" alt="bonVR" data-nsfw-filter-status="sfw" id="logoImage-notitle"
+        style="visibility: visible; margin-top:40px; display:none">
+    </div>
     <div class="sidebar-wrapper">
         <div class="navigation_wrapper">
             <ul class="nav sidebar-nav" id="menuList">
@@ -70,6 +70,7 @@
             </ul>
         </div>
     </div>
+    <setting-menu></setting-menu>
 </div>
 </template>
 
@@ -91,9 +92,14 @@
 import { mapGetters } from 'vuex'
 import config from '../../config'
 import firebase from 'firebase'
+import SettingMenu from './submenu/SettingMenu.vue'
 
 export default {
-  data: () => ({
+  components: {
+    SettingMenu
+  },
+  data: () =>
+    SettingMenu ({
     appName: config.appName
   }),
   computed: mapGetters({

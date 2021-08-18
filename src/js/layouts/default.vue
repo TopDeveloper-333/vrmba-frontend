@@ -1,13 +1,11 @@
 <template>
-  <div class="main-layout">
-
+  <!-- <div class="main-layout"> -->
     <div class="main-panel">
       <navbar />
       <sidebar />
-
       <child />
     </div>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
