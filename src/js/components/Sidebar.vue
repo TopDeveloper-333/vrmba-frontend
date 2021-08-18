@@ -70,7 +70,6 @@
             </ul>
         </div>
     </div>
-    <setting-menu></setting-menu>
 </div>
 </template>
 
@@ -92,16 +91,10 @@
 import { mapGetters } from 'vuex'
 import config from '../../config'
 import firebase from 'firebase'
-import SettingMenu from './submenu/SettingMenu.vue'
 
 export default {
   components: {
-    SettingMenu
   },
-  data: () =>
-    SettingMenu ({
-    appName: config.appName
-  }),
   computed: mapGetters({
     user: 'auth/user'
   }),
@@ -128,11 +121,13 @@ export default {
             $('.nav_label').addClass('animated fadeIn').hide();
             document.getElementById("logoImage").style.display = "none";
             document.getElementById("logoImage-notitle").style.display = "block";
+            document.getElementById("navbar").style.display = "none";
         }
         else {
             $('.nav_label').addClass('animated fadeIn').show();
             document.getElementById("logoImage").style.display = "block";
             document.getElementById("logoImage-notitle").style.display = "none";
+            document.getElementById("navbar").style.display = "block";
         }
 
     },

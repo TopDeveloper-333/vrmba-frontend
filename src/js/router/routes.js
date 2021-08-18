@@ -17,14 +17,15 @@ export default [
   { path: '/home', name: 'home', component: page('home.vue') },
   { path: '/meeting', name: 'meeting', component: page('meeting/meeting.vue') },
   { path: '/meeting/schedule', name: 'schedule', component: page('meeting/schedule.vue') },
-  {
-    path: '/settings',
-    component: page('settings/index.vue'),
-    children: [
-      { path: '', redirect: { name: 'settings.profile' } },
-      { path: 'profile', name: 'settings.profile', component: page('settings/profile.vue') },
-      { path: 'password', name: 'settings.password', component: page('settings/password.vue') }
-    ]
-  },
+  { path: '/settings', name: 'settings', component:page('settings/setting.vue')},
+  // {
+  //   path: '/settings',
+  //   component: page('settings/index.vue'),
+  //   children: [
+  //     { path: '', redirect: { name: 'settings.profile' } },
+  //     { path: 'profile', name: 'settings.profile', component: page('settings/profile.vue') },
+  //     { path: 'password', name: 'settings.password', component: page('settings/password.vue') }
+  //   ]
+  // },
   { path: '*', component: page('errors/404.vue') }
 ]

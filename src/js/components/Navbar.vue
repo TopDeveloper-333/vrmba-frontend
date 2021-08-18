@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-absolute">
+  <nav id="navbar" class="navbar navbar-expand-lg navbar-absolute">
     <div class="container">
       <router-link v-if="!user" :to="{ name: user ? 'home' : 'welcome' }" class="navbar-brand">
         <img src="black/img/title-avatar.png" alt="bonVR" >
