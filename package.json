@@ -29,6 +29,7 @@
     "vform": "^1.0.1",
     "vue": "^2.6.11",
     "vue-axios-cors": "^1.0.1",
+    "vue-custom-range-slider": "^0.2.3",
     "vue-i18n": "^8.25.0",
     "vue-meta": "^2.4.0",
     "vue-router": "^3.5.2",

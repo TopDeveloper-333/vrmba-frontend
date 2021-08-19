@@ -67,7 +67,7 @@
       <div v-if="menuId == 'Security'">Security</div>
       <div v-if="menuId == 'Notification'">Notification</div>
       <div v-if="menuId == 'VRDevices'">VRDevices</div>
-      <div v-if="menuId == 'AudioVideo'">AudioVideo</div>
+      <audiovideo v-if="menuId == 'AudioVideo'"></audiovideo>
       <div v-if="menuId == 'Appearance'">Appearance</div>
       <div v-if="menuId == 'AppsConnections'">AppsConnections</div>
     </div>
@@ -111,11 +111,13 @@
 </style>
 <script>
 import Account from './account.vue';
+import Audiovideo from './audiovideo.vue';
 
 export default {
   middleware: 'auth',
   components: {
-    Account
+    Account,
+    Audiovideo
   }, 
   data() {
     return {

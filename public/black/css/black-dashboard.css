@@ -16340,6 +16340,14 @@ code {
   border-color: #00a0fe;
 }
 
+.input-group select {
+  border-color: #00a0fe;
+}
+
+.input-group select:focus {
+  border-color: #00a0fe;
+}
+
 .input-group textarea {
   outline: none !important;
   border-top: 1px solid #00a0fe !important;
@@ -16352,6 +16360,7 @@ code {
 .input-group textarea:focus {
   border-color: #00a0fe;
 }
+
 
 
 .input-group-append .input-group-text {
@@ -17988,3 +17997,4 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
