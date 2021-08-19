@@ -6,6 +6,7 @@ import VCalendar from 'v-calendar'
 import App from '~/components/App'
 import firebase from 'firebase'
 import AxiosPlugin from 'vue-axios-cors'
+import vuetify from '~/plugins/vuetify'
 
 import '~/plugins'
 import '~/components'
@@ -44,5 +45,6 @@ new Vue({
   i18n,
   store,
   router,
+  vuetify,
   ...App
 })

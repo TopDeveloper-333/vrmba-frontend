@@ -62,7 +62,15 @@
       </ul>
 
     </div>
-    <div style="background:#262626; height:100vh">There m! </div>
+    <div style="background:#262626; height:100vh">
+      <account v-if="menuId == 'Account'">Account</account>
+      <div v-if="menuId == 'Security'">Security</div>
+      <div v-if="menuId == 'Notification'">Notification</div>
+      <div v-if="menuId == 'VRDevices'">VRDevices</div>
+      <div v-if="menuId == 'AudioVideo'">AudioVideo</div>
+      <div v-if="menuId == 'Appearance'">Appearance</div>
+      <div v-if="menuId == 'AppsConnections'">AppsConnections</div>
+    </div>
   </div>  
 </template>
 <style scoped>
@@ -102,9 +110,18 @@
 }
 </style>
 <script>
+import Account from './account.vue';
 
 export default {
   middleware: 'auth',
+  components: {
+    Account
+  }, 
+  data() {
+    return {
+      menuId: ""
+    }
+  },
   setup() {
     
   },
@@ -115,7 +132,10 @@ export default {
       for (let i = 0; i < menulist.length; i++) {
           menulist[i].classList.remove('active');
       }
-      event.target.closest("li").classList.add('active');
+      var selected = event.target.closest("li")
+      selected.classList.add('active');
+      this.menuId = selected.id
+      console.log(this.menuId)
     },
 
   }
