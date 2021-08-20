@@ -12,9 +12,8 @@
               <font-awesome-icon icon="microphone" style="color:#00a0fe"/> 
             </div>
           </div>
-          <select id="inputDevices" class="form-control" >
-            <option value="Default">Default</option>
-            <option value="VirtualMic">Virtual Mic input</option>
+          <select id="inputDevices" v-model="selectedInput" class="form-control" >
+            <option v-for="device in inputDevices" :value="device.deviceId">{{device.label}}</option>
           </select>
         </div>
       </div>
@@ -37,9 +36,8 @@
               <font-awesome-icon icon="headset" style="color:#00a0fe"/> 
             </div>
           </div>
-          <select id="outputDevices" class="form-control" >
-            <option value="Default">Default</option>
-            <option value="VirtualSound">Virtual Sound Output</option>
+          <select id="outputDevices" v-model="selectedOutput" class="form-control" >
+            <option v-for="device in outputDevices" :value="device.deviceId">{{device.label}}</option>
           </select>
         </div>
       </div>
@@ -148,17 +146,53 @@
 </style>
 <script>
 import CustomSlider from 'vue-custom-range-slider'
-export default{
-  components:{
+
+export default {
+  components: {
     CustomSlider
+  },
+
+  data() {
+    return {
+      inputDevices: [],
+      outputDevices: [],
+      selectedInput: "default",
+      selectedOutput: "default",
+      volume: "76"
+    }
+  },
+
+  mounted() {
+    if (window.navigator.mediaDevices.getUserMedia) {
+      window.navigator.mediaDevices.getUserMedia({audio: true, video:true})
+        .then(stream => {
+          if (!window.navigator.mediaDevices || !window.navigator.mediaDevices.enumerateDevices) {
+            console.log('enumerateDevices() not supported')
+            return false;
+          }
+
+          window.navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+              this.inputDevices = devices.filter(device => device.kind == 'audioinput')
+              this.outputDevices = devices.filter(device => device.kind == 'audiooutput')
+              this.selectedInput = this.inputDevices[0].deviceId
+              this.selectedOutput = this.outputDevices[0].deviceId
+              console.log(this.selectedInput)
+              console.log(this.selectedOutput)
+            })
+            .catch(err => {
+              console.log(`Failed to enumerate devices. ${err}`)
+            })
+
+        })
+        .catch(err => {
+          console.log(`Failed to getUserMedia() . ${err}`)  
+        })
+    }
+
   },
   setup() {
     
-  },
-  data() {
-    return { 
-      volume: "76"
-    }
   }
 }
 </script>
