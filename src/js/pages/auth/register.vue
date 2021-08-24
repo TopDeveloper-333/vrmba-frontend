@@ -51,6 +51,9 @@
               <v-button :loading="form.busy">
                 {{ $t('register') }}
               </v-button>
+              <a class="btn btn-md btn-google btn-block text-uppercase btn-outline" href="#" v-on:click="onGoogleSignup($event)">
+                <img src="https://img.icons8.com/color/16/000000/google-logo.png"> Sign up with Google
+              </a>
             </div>
           </div>
         </form>
@@ -85,6 +88,33 @@ export default {
   }),
 
   methods: {
+    onGoogleSignup: function(event) {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          /** @type {firebase.auth.OAuthCredential} */
+          var credential = result.credential;
+
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          var token = credential.accessToken;
+          // The signed-in user info.
+          var user = result.user;
+          // ...
+          console.log(result)
+          
+        }).catch((error) => {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+          console.log(error)
+        });
+    },
     register () {
       firebase.auth().createUserWithEmailAndPassword(this.form.email, this.form.password)
         .then(data => {
