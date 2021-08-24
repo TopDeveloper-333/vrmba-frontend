@@ -18,6 +18,7 @@ export default [
   { path: '/meeting', name: 'meeting', component: page('meeting/meeting.vue') },
   { path: '/meeting/schedule', name: 'schedule', component: page('meeting/schedule.vue') },
   { path: '/settings', name: 'settings', component:page('settings/setting.vue')},
+  { path: '/chat', name: 'chat', component:page('chat/chat.vue')},
   // {
   //   path: '/settings',
   //   component: page('settings/index.vue'),

@@ -117,7 +117,7 @@ export default {
         }
         event.target.closest("li").classList.add('active');
         var selected = event.target.closest("li")
-        if (selected.id == "Settings") {
+        if (selected.id == "Settings" || selected.id == "Chat") {
             $('.nav_label').addClass('animated fadeIn').hide();
             document.getElementById("logoImage").style.display = "none";
             document.getElementById("logoImage-notitle").style.display = "block";

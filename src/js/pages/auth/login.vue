@@ -43,7 +43,8 @@
               <v-button :loading="form.busy">
                 {{ $t('login') }}
               </v-button>
-              <a class="btn btn-md btn-google btn-block text-uppercase btn-outline" href="#" v-on:click="onGoogleSignup($event)">
+              <a class="btn btn-md btn-google btn-block text-uppercase btn-outline" 
+                 href="#" v-on:click="onGoogleSignup($event)" style="padding-left:10px; width:200px;margin-left:10px">
                 <img src="https://img.icons8.com/color/16/000000/google-logo.png"> Sign in with Google
               </a>
 
