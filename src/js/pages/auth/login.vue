@@ -43,6 +43,9 @@
               <v-button :loading="form.busy">
                 {{ $t('login') }}
               </v-button>
+              <a class="btn btn-md btn-google btn-block text-uppercase btn-outline" href="#" v-on:click="onGoogleSignup($event)">
+                <img src="https://img.icons8.com/color/16/000000/google-logo.png"> Sign in with Google
+              </a>
 
             </div>
           </div>
@@ -77,6 +80,45 @@ export default {
   }),
 
   methods: {
+    onGoogleSignup: function(event) {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          /** @type {firebase.auth.OAuthCredential} */
+          var credential = result.credential;
+          var token = credential.accessToken;
+          var user = result.user;
+         
+          user.getIdToken()
+            .then(idToken => {
+
+              console.log(idToken);
+              
+              // Save the token.
+              this.$store.dispatch('auth/saveToken', {
+                token: idToken,
+                user: user
+              })
+
+              // Redirect home.
+              // window.location.assign('/home')
+              this.redirect()
+
+            })
+            .catch(err => {
+              alert(err.message);
+            });
+
+        }).catch((error) => {
+          // Handle Errors here.
+          // var errorCode = error.code;
+          var errorMessage = error.message;
+          // var email = error.email;
+          // var credential = error.credential;
+          alert(err.message);
+        });
+    },
     login () {
       firebase.auth().signInWithEmailAndPassword(this.form.email, this.form.password)
         .then(data => {
