@@ -2,10 +2,11 @@
   <div class="grid-container">
     <chat-window
       :current-user-id="currentUserId"
-      :rooms="rooms"
       :messages="messages"
       :theme="theme"
       :height="height"
+      :room-id="roomId"
+      :rooms="loadedRooms"
 			@fetch-more-rooms="fetchMoreRooms"
 			@fetch-messages="fetchMessages"
 			@send-message="sendMessage"
@@ -39,73 +40,43 @@ export default {
   }, 
   data() {    
     return {
-      rooms:[
-          {
-            roomId: 1,
-            roomName: 'John Doe',
-            avatar: 'black/img/account-1.png',
-            unreadCount: 1,
-            lastMessage: {
-              content: 'Last message received',
-              senderId: 1234,
-              username: 'John Doe',
-              timestamp: '10:20',
-              saved: true,
-              distributed: false,
-              seen: false,
-              new: true
-            },
-            users: [
-              {
-                _id: 1234,
-                username: 'John Doe',
-                avatar: 'black/img/account-1.png',
-                status: {
-                  state: 'online',
-                  lastChanged: 'today, 14:30'
-                }
-              },
-              {
-                _id: 4321,
-                username: 'John Snow',
-                avatar: 'assets/imgs/snow.png',
-                status: {
-                  state: 'offline',
-                  lastChanged: '14 July, 20:00'
-                }
-              }
-            ],
-            typingUsers: [ 4321 ]
-          }
+      roomsPerPage:15,      
+      rooms:[],
+      roomId: '',
+      startRooms: null,
+      endRooms: null,
+      roomsLoaded: false,
+      loadingRooms:true,
+      allUsers: [],
+      loadingLastMessageByRoom: 0,
+      roomsLoadedCount:false,
+      selectedRoom: null,
+      messagesPerPage: 20,
+      messages:[],
+      messagesLoaded:false,
+      roomMessage: '',
+      startMessages: null,
+      endMessages: null,
+      roomsListeners: [],
+      listeners: [],
+      typingMessageCache: '',
+      disableForm: false,
+      addNewRoom: null,
+      addRoomUsername: '',
+      inviteRoomId: null,
+      invitedUsername: '',
+      removeRoomId: null,
+      removeUserId: '',
+      removeUsers: [],
+      roomActions: [
+        { name: 'inviteUser', title: 'Invite User'},
+        { name: 'removeUser', title: 'Remove User'},
+        { name: 'deleteRoom', title: 'Delete Room'}
       ],
-      messages:[
-        {
-          _id: 7890,
-          indexId: 12092,
-          content: 'Message 1',
-          senderId: 1234,
-          username: 'John Doe',
-          avatar: 'black/img/account-1.png',
-          date: '13 November',
-          timestamp: '10:20',
-          system: false,
-          saved: true,
-          distributed: true,
-          seen: true,
-          deleted: false,
-          disableActions: false,
-          disableReactions: false,
-          files: [
-          ],
-          reactions: {
-          },
-          replyMessage: {
-            content: 'Reply Message',
-            senderId: 4321,
-            files: [
-            ]
-          },
-        }        
+      menuActions: [
+        { name: 'inviteUser', title: 'Invite User'},
+        { name: 'removeUser', title: 'Remove User'},
+        { name: 'deleteRoom', title: 'Delete Room'}
       ],
       currentUserId:4321,
       theme:"dark",
@@ -115,9 +86,48 @@ export default {
   setup() {
     
   },
+  computed: {
+    loadedRooms() {
+      return this.rooms.slice(0, this.roomsLoadedCount)
+    },
+  },
+  mounted() {
+    this.fetchRooms()
+    this.updateUserOnlineStatus()
+  },
   methods: {
-    fetchMoreRooms() {
-      console.log('fetchMoreRooms() is called')
+    updateUserOnlineStatus() {
+
+    },
+    fetchRooms() {
+      this.resetRooms()
+      this.fetchMoreRooms()
+    },
+    resetRooms(){
+      this.loadingRooms = true
+      this.loadingLastMessageByRoom = 0
+      this.roomsLoadedCount = 0
+      this.rooms = []
+      this.roomsLoaded = true
+      this.startRooms = null
+      this.endRooms = null
+      this.roomsListeners.forEach(listener => listener())
+      this.roomsListeners = []
+      this.resetMessages()
+    },
+    resetMessages() {
+      this.messages = []
+      this.messagesLoaded = false
+      this.startMessages = null
+      this.endMessages = null
+      this.listeners.forEach(listener => listener())
+      this.listeners = []
+    },
+    async fetchMoreRooms() {
+      if (this.endRooms && !this.startRooms)
+        return (this.roomsLoaded = true)
+
+      // here i am
     },
     fetchMessages({room, options={}}) {
       console.log('fetchMessages() is called')
