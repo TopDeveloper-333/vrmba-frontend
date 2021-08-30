@@ -1,5 +1,42 @@
 <template>
   <div class="grid-container">
+    <button v-on:click="test">Test button</button>
+		<form v-if="addNewRoom" @submit.prevent="createRoom">
+			<input v-model="addRoomUsername" type="text" placeholder="Add username" />
+			<button type="submit" :disabled="disableForm || !addRoomUsername">
+				Create Room
+			</button>
+			<button class="button-cancel" @click="addNewRoom = false">
+				Cancel
+			</button>
+		</form>
+		<form v-if="inviteRoomId" @submit.prevent="addRoomUser">
+			<input v-model="invitedUsername" type="text" placeholder="Add username" />
+			<button type="submit" :disabled="disableForm || !invitedUsername">
+				Add User
+			</button>
+			<button class="button-cancel" @click="inviteRoomId = null">
+				Cancel
+			</button>
+		</form>
+
+		<form v-if="removeRoomId" @submit.prevent="deleteRoomUser">
+			<select v-model="removeUserId">
+				<option default value="">
+					Select User
+				</option>
+				<option v-for="user in removeUsers" :key="user._id" :value="user._id">
+					{{ user.username }}
+				</option>
+			</select>
+			<button type="submit" :disabled="disableForm || !removeUserId">
+				Remove User
+			</button>
+			<button class="button-cancel" @click="removeRoomId = null">
+				Cancel
+			</button>
+		</form>
+
     <chat-window
       :current-user-id="currentUserId"
       :messages="messages"
@@ -30,6 +67,7 @@
 }
 </style>
 <script>
+import store from '~/store'
 import ChatWindow from 'vue-advanced-chat'
 import 'vue-advanced-chat/dist/vue-advanced-chat.css'
 
@@ -96,6 +134,10 @@ export default {
     this.updateUserOnlineStatus()
   },
   methods: {
+    async test() {
+      alert('test button is clicked')
+      const data = await store.dispatch('message/sendMessage', {})
+    },
     updateUserOnlineStatus() {
 
     },
@@ -128,6 +170,8 @@ export default {
         return (this.roomsLoaded = true)
 
       // here i am
+
+      
     },
     fetchMessages({room, options={}}) {
       console.log('fetchMessages() is called')
