@@ -136,7 +136,7 @@ export default {
   methods: {
     async test() {
       alert('test button is clicked')
-      const data = await store.dispatch('message/sendMessage', {})
+      const data = await store.dispatch('message/getRooms', 15)
     },
     updateUserOnlineStatus() {
 
@@ -171,7 +171,7 @@ export default {
 
       // here i am
 
-      
+
     },
     fetchMessages({room, options={}}) {
       console.log('fetchMessages() is called')

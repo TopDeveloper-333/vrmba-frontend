@@ -20,6 +20,16 @@ export const mutations = {
 // actions
 export const actions = {
   
+  async getRooms({commit}, roomsPerPage) {
+    try {
+      const { data } = await axios.get(config.apiPath + 'rooms', { params: { roomsPerPage: 15 } })
+      commit(types.GET_ROOMS_SUCCESS, data)
+    }
+    catch(e) {
+      commit(types.GET_ROOMS_FAILURE)
+    }
+  },
+
   async sendMessage({commit}, message) {
     try {
       message.sender_fullname = 'Test Fullname'
