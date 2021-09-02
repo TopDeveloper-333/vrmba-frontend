@@ -41,7 +41,7 @@ export const actions = {
     }
   },
 
-  async createRoom({commit}, users){
+  async createRoom({commit}, users) {
     try {
       const {data} = await axios.post(config.apiPath + 'room', {users: users})
       return data
@@ -51,6 +51,18 @@ export const actions = {
     }
   },
 
+  async sendMessage({commit}, payload) {
+    try {
+      const { data } = await axios.post(config.apiPath + 'message', 
+                                        { roomId: payload.roomId, message: payload.message})
+      return data
+    }
+    catch(e) {
+      return {}
+    }
+  },
+
+  // for chat21
   async sendMessage({commit}, message) {
     try {
       message.sender_fullname = 'Test Fullname'
@@ -70,6 +82,7 @@ export const actions = {
     }
   },
 
+  // for chat21
   async deleteMessage({commit}, recipient_id, message_id) {
     try {
       const { data } = await axios.delete(config.apiPath + `messages/${recipient_id}/${message_id}`)

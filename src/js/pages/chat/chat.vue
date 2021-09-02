@@ -278,14 +278,49 @@ export default {
     fetchMessages({room, options={}}) {
       console.log('fetchMessages() is called')
     },
-    sendMessage({content, roomId, files, replyMessage}) {
-      console.log('sendMessage() is called')
+    async sendMessage({content, roomId, files, replyMessage}) {
+      console.log('sendMessage():', roomId, 'content:', content, 'replyMessage:', replyMessage, 'files:', files)
+
+			const message = {
+				sender_id: this.currentUserId,
+				content,
+				timestamp: new Date()
+			}
+
+			if (files) {
+				message.files = this.formattedFiles(files)
+			}
+
+			if (replyMessage) {
+				message.replyMessage = {
+					_id: replyMessage._id,
+					content: replyMessage.content,
+					sender_id: replyMessage.senderId
+				}
+				if (replyMessage.files) {
+					message.replyMessage.files = replyMessage.files
+				}
+			}
+
+      const data = await store.dispatch('message/sendMessage', { roomId: roomId, message: message})
+
+			if (files) {
+				for (let index = 0; index < files.length; index++) {
+					await this.uploadFile({ file: files[index], messageId: id, roomId })
+				}
+			}
     },
     editMessage({messageId, newContent, roomId, files}) {
       console.log('editMessage() is called')
     },
     deleteMessage({message, roomId}) {
       console.log('deleteMessage() is called')
+    },
+    formattedFiles(files) {
+      console.log('formattedFiles() is called')
+    },
+    uploadFile({file, messageId, roomId}) {
+      console.log('uploadFile() is called')
     },
     openFile({file}) {
       console.log('openFile() is called')
