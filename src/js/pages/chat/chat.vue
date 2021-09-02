@@ -251,10 +251,10 @@ export default {
 					...room,
 					roomId: key,
 					avatar: roomAvatar,
-					index: room.lastUpdated._seconds,
+					index: room.lastUpdated, // room.lastUpdated._seconds,
 					lastMessage: {
 						content: 'Room created',
-						timestamp: room.lastUpdated
+						timestamp: this.formatTimestamp(new Date(room.lastUpdated), room.lastUpdated)
 					}
 				})
 			})
@@ -267,16 +267,24 @@ export default {
 				this.roomsLoadedCount = 0
 			}
       
+			console.log(this.rooms)
 			// this.listenUsersOnlineStatus(formattedRooms)
 			// this.listenRooms(query)
     },
-    async listenLastMessage(room) {
+		formatTimestamp(date, timestamp) {
+			const timestampFormat = this.isSameDay(date, new Date()) ? 'HH:mm' : 'DD/MM/YY'
+			const result = this.parseTimestamp(timestamp, timestampFormat)
+			return timestampFormat === 'HH:mm' ? `Today, ${result}` : result
+		},
+		async listenLastMessage(room) {
       console.log('listenLastMessage() is called')
 
       const lastMessage = await store.dispatch('message/getLastMessage', room.roomId)
       const roomIndex = this.rooms.findIndex(
         r => room.roomId === r.roomId
       )
+
+			lastMessage.timestamp = this.formatTimestamp(new Date(lastMessage.lastUpdated), lastMessage.lastUpdated)
       this.rooms[roomIndex].lastMessage = lastMessage
       this.rooms = [...this.rooms]
 
@@ -338,8 +346,8 @@ export default {
 					senderId: message.sender_id,
 					_id: message.id,
 					seconds: timestamp.seconds,
-					timestamp: timestamp, 
-					date: timestamp,
+					timestamp: this.parseTimestamp(timestamp, 'HH:mm'), 
+					date: this.parseTimestamp(timestamp, 'DD MMMM YYYY'),
 					username: senderUser ? senderUser.username : null,
 					// avatar: senderUser ? senderUser.avatar : null,
 					distributed: true
@@ -475,7 +483,41 @@ export default {
 			this.invitedUsername = ''
 			this.removeRoomId = null
 			this.removeUserId = ''
-		}
+		},
+		parseTimestamp(timestamp, format = ''){
+			if (!timestamp) return
+
+			const date = new Date(timestamp)
+
+			if (format === 'HH:mm') {
+				return `${this.zeroPad(date.getHours(), 2)}:${this.zeroPad(date.getMinutes(), 2)}`
+			} else if (format === 'DD MMMM YYYY') {
+				const options = { month: 'long', year: 'numeric', day: 'numeric' }
+				return `${new Intl.DateTimeFormat('en-US', options).format(date)}`
+			} else if (format === 'DD/MM/YY') {
+				const options = { month: 'numeric', year: 'numeric', day: 'numeric' }
+				return `${new Intl.DateTimeFormat('en-US', options).format(date)}`
+			} else if (format === 'DD MMMM, HH:mm') {
+				const options = { month: 'long', day: 'numeric' }
+				return `${new Intl.DateTimeFormat('en-US', options).format(
+					date
+				)}, ${this.zeroPad(date.getHours(), 2)}:${this.zeroPad(date.getMinutes(), 2)}`
+			}
+
+			return date
+		},
+		zeroPad(num, pad){
+			return String(num).padStart(pad, '0')
+		},
+
+		isSameDay(d1, d2){
+			return (
+				d1.getFullYear() === d2.getFullYear() &&
+				d1.getMonth() === d2.getMonth() &&
+				d1.getDate() === d2.getDate()
+			)
+		},
+
   }
 }
 </script>
