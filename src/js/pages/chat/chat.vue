@@ -386,12 +386,48 @@ export default {
 					await this.uploadFile({ file: files[index], messageId: id, roomId })
 				}
 			}
+
     },
-    editMessage({messageId, newContent, roomId, files}) {
+    async editMessage({messageId, newContent, roomId, files}) {
       console.log('editMessage() is called')
-    },
-    deleteMessage({message, roomId}) {
+
+			const newMessage = { edited: new Date() }
+			newMessage.content = newContent
+
+			if (files) {
+				newMessage.files = this.formattedFiles(files)
+			} else {
+				newMessage.files = ""
+			}
+
+			const data = await store.dispatch('message/editMessage', {roomId: roomId, messageId: messageId, message: newMessage})
+				
+			if (files) {
+				for (let index = 0; index < files.length; index++) {
+					if (files[index]?.blob) {
+						await this.uploadFile({ file: files[index], messageId, roomId })
+					}
+				}
+			}
+
+		},
+    async deleteMessage({message, roomId}) {
       console.log('deleteMessage() is called')
+
+			const data = await store.dispatch('message/deleteMessage', {roomId: roomId, messageId: message._id})
+
+			// const { files } = message
+
+			// if (files) {
+			// 	files.forEach(file => {
+			// 		const deleteFileRef = filesRef
+			// 			.child(this.currentUserId)
+			// 			.child(message._id)
+			// 			.child(`${file.name}.${file.extension || file.type}`)
+			// 		deleteFileRef.delete()
+			// 	})
+			// }
+
     },
     formattedFiles(files) {
       console.log('formattedFiles() is called')
