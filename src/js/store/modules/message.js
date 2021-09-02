@@ -4,7 +4,7 @@ import config from "../../../config"
 
 // state
 export const state = {
-
+  rooms: []
 }
 
 // getters
@@ -14,19 +14,42 @@ export const getters = {
 
 // mutations 
 export const mutations = {
-
+  [types.GET_ROOMS_SUCCESS] (state, data) {
+    state.rooms.push(data)
+  },
+  [types.GET_ROOMS_FAILURE] (state) {
+    
+  }
 }
 
 // actions
 export const actions = {
   
-  async getRooms({commit}, roomsPerPage) {
+  async getRooms({commit}, payload) {
     try {
-      const { data } = await axios.get(config.apiPath + 'rooms', { params: { roomsPerPage: 15 } })
-      commit(types.GET_ROOMS_SUCCESS, data)
+      console.log('getRooms: ', payload.startRooms, payload.roomsPerPage)
+
+      if (payload.startRooms == undefined)
+        payload.startRooms = 0
+
+      const { data } = await axios.get(config.apiPath + 'rooms', { params: 
+        { roomsPerPage: payload.roomsPerPage, 
+          startRooms: payload.startRooms } 
+      })
+      return data
     }
     catch(e) {
-      commit(types.GET_ROOMS_FAILURE)
+      return []
+    }
+  },
+
+  async createRoom({commit}, users){
+    try {
+      const {data} = await axios.post(config.apiPath + 'room', {users: users})
+      return data
+    }
+    catch(e) {
+      return {}
     }
   },
 

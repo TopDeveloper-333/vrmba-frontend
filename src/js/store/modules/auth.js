@@ -55,26 +55,38 @@ export const actions = {
   },
 
   fetchUser ({ commit }) {
-    // try {
-
-      axios.post(config.apiPath + 'user')
-        .then((response) => {
-          commit(types.FETCH_USER_SUCCESS, { user: response.data })
-        }, (err) =>{
-          commit(types.FETCH_USER_SUCCESS, { user: null })
-        });
-
-      // const { data } = await axios.post( config.apiPath + 'user')
-
-    //   commit(types.FETCH_USER_SUCCESS, { user: data })
-    // } catch (e) {
-    //   commit(types.FETCH_USER_FAILURE)
-    // }
-    
+    axios.post(config.apiPath + 'user')
+      .then((response) => {
+        commit(types.FETCH_USER_SUCCESS, { user: response.data })
+      }, (err) =>{
+        commit(types.FETCH_USER_SUCCESS, { user: null })
+      });    
   },
 
   updateUser ({ commit }, payload) {
     commit(types.UPDATE_USER, payload)
+  },
+
+  async getUser({commit}, userId) {    
+    try {
+      const { data } = await axios.get(config.apiPath + 'user', { params: { userId:userId } })
+      return data
+    }
+    catch(err) {
+      return {}
+    }
+  },
+
+  async getUserId({commit}, email) {
+    try {
+      const { data } = await axios.post(config.apiPath + 'userid', {email: email})
+      console.log('getUserId: ', data)
+      return data
+    }
+    catch(err) {
+      return ''
+    }
+
   },
 
   async logout ({ commit }) {
