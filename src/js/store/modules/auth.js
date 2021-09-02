@@ -27,7 +27,6 @@ export const mutations = {
   },
 
   [types.FETCH_USER_SUCCESS] (state, { user }) {
-    console.log('PASS FETCH_USER_SUCCESS')
     state.user = user
   },
 
@@ -70,6 +69,8 @@ export const actions = {
   async getUser({commit}, userId) {    
     try {
       const { data } = await axios.get(config.apiPath + 'user', { params: { userId:userId } })
+      data._id = data.uid
+      data.username = data.displayName
       return data
     }
     catch(err) {

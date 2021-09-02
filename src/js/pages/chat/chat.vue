@@ -139,7 +139,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.user)
     this.fetchRooms()
     this.updateUserOnlineStatus()
   },
@@ -229,7 +228,7 @@ export default {
 			rooms.forEach(room => {
 				roomList[room.id] = { ...room, users: [] }
 				room.users.forEach(userId => {
-					const foundUser = this.allUsers.find(user => user?.uid === userId)
+					const foundUser = this.allUsers.find(user => user?._id === userId)
 					if (foundUser) roomList[room.id].users.push(foundUser)
 				})
 			})
@@ -238,9 +237,9 @@ export default {
 			Object.keys(roomList).forEach(key => {
 				const room = roomList[key]
 				const roomContacts = room.users.filter(
-					user => user.uid !== this.currentUserId
+					user => user._id !== this.currentUserId
 				)
-				room.roomName = roomContacts.map(user => user.displayName).join(', ') || 'Myself'
+				room.roomName = roomContacts.map(user => user.username).join(', ') || 'Myself'
 
 				const roomAvatar =
 					roomContacts.length === 1 && roomContacts[0].avatar

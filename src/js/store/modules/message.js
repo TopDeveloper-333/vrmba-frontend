@@ -27,8 +27,6 @@ export const actions = {
   
   async getRooms({commit}, payload) {
     try {
-      console.log('getRooms: ', payload.startRooms, payload.roomsPerPage)
-
       if (payload.startRooms == undefined)
         payload.startRooms = 0
 
