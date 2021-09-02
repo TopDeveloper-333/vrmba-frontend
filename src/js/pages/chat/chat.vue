@@ -44,6 +44,12 @@
       :height="height"
       :room-id="roomId"
       :rooms="loadedRooms"
+			:loading-rooms="loadingRooms"
+			:messages-loaded="messagesLoaded"
+			:rooms-loaded="roomsLoaded"
+			:room-actions="roomActions"
+			:menu-actions="menuActions"
+			:room-message="roomMessage"
 			@fetch-more-rooms="fetchMoreRooms"
 			@fetch-messages="fetchMessages"
 			@send-message="sendMessage"
@@ -255,8 +261,6 @@ export default {
 
 			this.rooms = this.rooms.concat(formattedRooms)
 			formattedRooms.map(room => this.listenLastMessage(room))
-
-      debugger
 
 			if (!this.rooms.length) {
 				this.loadingRooms = false
