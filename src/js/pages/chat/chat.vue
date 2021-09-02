@@ -1,27 +1,30 @@
 <template>
   <div class="grid-container">
-    <button v-on:click="test">Test button</button>
-		<form v-if="addNewRoom" @submit.prevent="createRoom">
-			<input v-model="addRoomUsername" type="text" placeholder="Add username" />
-			<button type="submit" style="margin-left:10px" :disabled="disableForm || !addRoomUsername">
+		<form v-if="addNewRoom" style="padding:10px 10px 0px 20px; background:#181a1b" @submit.prevent="createRoom">
+			<label class="col-form-label">User: </label>
+			<input v-model="addRoomUsername" style="margin-left:10px;background-color:transparent;color:white;height:36px" 
+					type="text" placeholder="Add e-mail address" />
+			<button type="submit" class="btn btn-primary" style="margin-left:10px" :disabled="disableForm || !addRoomUsername">
 				Create Room
 			</button>
-			<button class="button-cancel" style="margin-left:10px" @click="addNewRoom = false">
+			<button class="btn btn-cancel" style="margin-left:10px" @click="addNewRoom = false">
 				Cancel
 			</button>
 		</form>
-		<form v-if="inviteRoomId" @submit.prevent="addRoomUser">
-			<input v-model="invitedUsername" type="text" placeholder="Add username" />
-			<button type="submit" :disabled="disableForm || !invitedUsername">
+		<form v-if="inviteRoomId" style="padding:10px 10px 0px 20px; background:#181a1b" @submit.prevent="addRoomUser">
+			<label class="col-form-label">User: </label>
+			<input v-model="invitedUsername"  style="margin-left:10px;background-color:transparent;color:white;height:36px" 
+					type="text" placeholder="Add e-mail address" />
+			<button type="submit" class="btn btn-primary" style="margin-left:10px" :disabled="disableForm || !invitedUsername">
 				Add User
 			</button>
-			<button class="button-cancel" @click="inviteRoomId = null">
+			<button class="btn btn-cancel" style="margin-left:10px" @click="inviteRoomId = null">
 				Cancel
 			</button>
 		</form>
 
-		<form v-if="removeRoomId" @submit.prevent="deleteRoomUser">
-			<select v-model="removeUserId">
+		<form v-if="removeRoomId" style="padding:10px 10px 0px 20px; background:#181a1b" @submit.prevent="deleteRoomUser">
+			<select v-model="removeUserId" style="margin-left:10px;background-color:transparent;color:white;height:36px;min-width:200px">
 				<option default value="">
 					Select User
 				</option>
@@ -29,10 +32,10 @@
 					{{ user.username }}
 				</option>
 			</select>
-			<button type="submit" :disabled="disableForm || !removeUserId">
+			<button type="submit" class="btn btn-primary" style="margin-left:10px" :disabled="disableForm || !removeUserId">
 				Remove User
 			</button>
-			<button class="button-cancel" @click="removeRoomId = null">
+			<button class="btn btn-cancel" style="margin-left:10px" @click="removeRoomId = null">
 				Cancel
 			</button>
 		</form>
@@ -467,8 +470,29 @@ export default {
 			this.addNewRoom = true
     },
     menuActionHandler({action, roomId}) {
-      console.log('menuActionHandler() is called')
+			switch (action.name) {
+				case 'inviteUser':
+					return this.inviteUser(roomId)
+				case 'removeUser':
+					return this.removeUser(roomId)
+				case 'deleteRoom':
+					return this.deleteRoom(roomId)
+			}
     },
+		inviteUser(roomId) {
+			this.resetForms()
+			this.inviteRoomId = roomId
+		},
+		removeUser(roomId) {
+			this.resetForms()
+			this.removeRoomId = roomId
+			this.removeUsers = this.rooms.find(room => room.roomId === roomId).users
+		},
+		async deleteRoom(roomId) {
+			const room = this.rooms.find(r => r.roomId === roomId)
+			const data =await store.dispatch('message/deleteRoom', roomId)
+			this.fetchRooms()
+		},
     sendMessageReaction({reaction, remove, messageId, roomId}) {
       console.log('sendMessageReaction() is called')
     },

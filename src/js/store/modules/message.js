@@ -51,6 +51,16 @@ export const actions = {
     }
   },
 
+  async deleteRoom({commit}, roomId) {
+    try {
+      const {data} = await axios.delete(config.apiPath + 'room', { data: { roomId: roomId }})
+      return data
+    }
+    catch(e) {
+      return {}
+    }
+  },
+
   async getMessages({commit}, payload) {
     try {
       if (payload.startMessage == undefined)
