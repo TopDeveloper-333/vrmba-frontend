@@ -51,10 +51,38 @@ export const actions = {
     }
   },
 
+  async getMessages({commit}, payload) {
+    try {
+      if (payload.startMessage == undefined)
+        payload.startMessage = 0
+
+      const { data } = await axios.get(config.apiPath + 'message', { params: 
+        { roomId: payload.roomId, 
+          startMessage: payload.startMessage,
+          messagesPerPage: payload.messagesPerPage} 
+        })
+      return data
+    }
+    catch(e) {
+      return []
+    }
+  },
+
   async sendMessage({commit}, payload) {
     try {
       const { data } = await axios.post(config.apiPath + 'message', 
                                         { roomId: payload.roomId, message: payload.message})
+      return data
+    }
+    catch(e) {
+      return {}
+    }
+  },
+
+  async getLastMessage({commit}, roomId) {
+    try {
+      const { data } = await axios.get(config.apiPath + 'lastMessage', 
+                                       { params: { roomId: roomId } })
       return data
     }
     catch(e) {

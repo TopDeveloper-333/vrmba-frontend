@@ -83,6 +83,7 @@ export default {
   components: {
     ChatWindow
   }, 
+  emits: ['show-demo-options'],
   data() {    
     return {
       roomsPerPage:15,      
@@ -269,15 +270,91 @@ export default {
 			// this.listenUsersOnlineStatus(formattedRooms)
 			// this.listenRooms(query)
     },
-    listenLastMessage(room) {
+    async listenLastMessage(room) {
       console.log('listenLastMessage() is called')
 
-      this.loadingRooms = false
-      this.roomsLoadedCount = this.rooms.length
+      const lastMessage = await store.dispatch('message/getLastMessage', room.roomId)
+      const roomIndex = this.rooms.findIndex(
+        r => room.roomId === r.roomId
+      )
+      this.rooms[roomIndex].lastMessage = lastMessage
+      this.rooms = [...this.rooms]
+
+      if (this.loadingLastMessageByRoom < this.rooms.length) {
+        this.loadingLastMessageByRoom++
+        if (this.loadingLastMessageByRoom === this.rooms.length) {
+          this.loadingRooms = false
+          this.roomsLoadedCount = this.rooms.length
+        }
+      }
+      
     },
-    fetchMessages({room, options={}}) {
-      console.log('fetchMessages() is called')
+    async fetchMessages({room, options={}}) {
+      console.log('fetchMessages() is called: ')
+
+			if (options.reset) {
+				this.resetMessages()
+				this.roomId = room.roomId
+			}
+
+			if (this.endMessages && !this.startMessages) {
+				return (this.messagesLoaded = true)
+			}
+
+      const messages = await store.dispatch('message/getMessages', 
+					{ roomId: room.roomId, startMessage : this.startMessages, messagesPerPage: this.messagesPerPage })
+
+			this.selectedRoom = room.roomId
+
+			if (messages.length <= 0) 
+				this.messagesLoaded = true
+
+			if (this.startMessages) 
+				this.endMessages = this.startMessages
+			
+			this.startMessages = messages[messages.length - 1]
+
+			if (options.reset) this.messages = []
+			messages.forEach(message => {
+				const formattedMessage = this.formatMessage(room, message)
+				this.messages.unshift(formattedMessage)
+			})
+
+			// const listener = listenerQuery.onSnapshot(snapshots => {
+			// 	// this.incrementDbCounter('Listen Room Messages', snapshots.size)
+			// 	this.listenMessages(snapshots, room)
+			// })
+			// this.listeners.push(listener)
+
     },
+		formatMessage(room, message) {
+			const senderUser = room.users.find(
+				user => message.sender_id === user._id
+			)
+			const { timestamp } = message
+			const formattedMessage = {
+				...message,
+				...{
+					senderId: message.sender_id,
+					_id: message.id,
+					seconds: timestamp.seconds,
+					timestamp: timestamp, 
+					date: timestamp,
+					username: senderUser ? senderUser.username : null,
+					// avatar: senderUser ? senderUser.avatar : null,
+					distributed: true
+				}
+			}
+			if (message.replyMessage) {
+				formattedMessage.replyMessage = {
+					...message.replyMessage,
+					...{
+						senderId: message.replyMessage.sender_id
+					}
+				}
+			}
+			return formattedMessage
+		},		
     async sendMessage({content, roomId, files, replyMessage}) {
       console.log('sendMessage():', roomId, 'content:', content, 'replyMessage:', replyMessage, 'files:', files)
 
