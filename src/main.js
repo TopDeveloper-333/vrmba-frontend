@@ -33,6 +33,14 @@ const firebaseConfig = {
 //
 
 firebase.initializeApp(firebaseConfig)
+navigator.serviceWorker.register('firebase-messaging-sw.js', {scope: 'firebase-cloud-messaging-push-scope'})
+  .then((registration) => {
+    const messaging = firebase.messaging()
+    messaging.useServiceWorker(registration)
+  }).catch(err => {
+    console.log(err)
+  })
+
 const auth = firebase.auth();
 auth.useEmulator("http://localhost:9099");
 

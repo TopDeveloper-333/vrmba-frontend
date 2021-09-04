@@ -11,6 +11,9 @@
 <script>
 import Loading from './Loading'
 import config from '../../config';
+import firebase from 'firebase'
+import 'firebase/messaging'
+
 
 // Load layout components dynamically.
 const requireContext = require.context('~/layouts', false, /.*\.vue$/)
@@ -40,6 +43,24 @@ export default {
     return {
       title: config.appName,
       titleTemplate: `%s`
+    }
+  },
+
+  created() {
+    try {
+      firebase.messaging().requestPermission()
+        .then(() => {
+          console.log('Notification permission granted')
+          firebase.messaging().getToken()
+            .then((token) => {
+              window.console.log(token)
+            })
+            .catch(err => {
+              console.log('Unable to get token', err)
+            })
+        })
+    } catch(e) {
+      console.log(e)
     }
   },
 
