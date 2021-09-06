@@ -94,8 +94,6 @@ export default {
           user.getIdToken()
             .then(idToken => {
 
-              console.log(idToken);
-              
               // Save the token.
               this.$store.dispatch('auth/saveToken', {
                 token: idToken,

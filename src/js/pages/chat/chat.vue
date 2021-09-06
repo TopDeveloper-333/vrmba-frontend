@@ -80,6 +80,8 @@ import { mapState } from 'vuex'
 import store from '~/store'
 import ChatWindow from 'vue-advanced-chat'
 import 'vue-advanced-chat/dist/vue-advanced-chat.css'
+import firebase from 'firebase'
+import 'firebase/messaging'
 
 export default {
   middleware: 'auth',
@@ -89,7 +91,8 @@ export default {
   emits: ['show-demo-options'],
   data() {    
     return {
-      roomsPerPage:15,      
+			messaging: firebase.messaging(),
+      roomsPerPage:15,
       rooms:[],
       roomId: '',
       startRooms: null,
@@ -132,8 +135,11 @@ export default {
     }
   },
   setup() {
-    
+  
   },
+	created() {
+		this.receieveMessage()
+	},
   computed: {
     ...mapState({
       currentUserId: state => state.auth.user.uid
@@ -147,6 +153,18 @@ export default {
     this.updateUserOnlineStatus()
   },
   methods: {
+		receieveMessage() {
+			try {
+				console.log('receivemessage() is called')
+				this.messaging.onMessage((payload) => {
+					debugger
+					console.log(payload)
+				})
+			}
+			catch (e) {
+				console.log(e)
+			}
+		},
     async test() {
       alert('test button is clicked')
       // const data = await store.dispatch('message/getRooms', { startRooms: 0, roomsPerPage: 15})
@@ -270,7 +288,6 @@ export default {
 				this.roomsLoadedCount = 0
 			}
       
-			console.log(this.rooms)
 			// this.listenUsersOnlineStatus(formattedRooms)
 			// this.listenRooms(query)
     },
@@ -302,6 +319,8 @@ export default {
     },
     async fetchMessages({room, options={}}) {
       console.log('fetchMessages() is called: ')
+			
+			this.$emit('show-demo-options', false)
 
 			if (options.reset) {
 				this.resetMessages()
@@ -330,6 +349,8 @@ export default {
 				const formattedMessage = this.formatMessage(room, message)
 				this.messages.unshift(formattedMessage)
 			})
+
+			console.log('Messages: ', messages)
 
 			// const listener = listenerQuery.onSnapshot(snapshots => {
 			// 	// this.incrementDbCounter('Listen Room Messages', snapshots.size)
