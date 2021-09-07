@@ -51,9 +51,9 @@ export default {
       firebase.messaging().requestPermission()
         .then(() => {
           console.log('Notification permission granted')
-          firebase.messaging().getToken()
+          firebase.messaging().getToken({vapidKey: "BN5DDqJ1-fc_urCRSidCXCDSUCmZpC01IMSrmUyrnM1haq39W8_nbgwOh1TBt2TjZtKKvLE4Pb9GWSOYja-PAaU"})
             .then((token) => {
-              window.console.log(token)
+              console.log('MessageToken: ', token)
             })
             .catch(err => {
               console.log('Unable to get token', err)

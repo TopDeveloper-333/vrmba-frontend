@@ -155,7 +155,6 @@ export default {
   methods: {
 		receieveMessage() {
 			try {
-				console.log('receivemessage() is called')
 				this.messaging.onMessage((payload) => {
 					debugger
 					console.log(payload)
@@ -418,6 +417,9 @@ export default {
 					await this.uploadFile({ file: files[index], messageId: id, roomId })
 				}
 			}
+
+			// Modified by Wahaha
+			this.fetchMoreRooms()
 
     },
     async editMessage({messageId, newContent, roomId, files}) {

@@ -42,7 +42,11 @@ navigator.serviceWorker.register('firebase-messaging-sw.js', {scope: 'firebase-c
   })
 
 const auth = firebase.auth();
+const db = firebase.firestore();
+const functions = firebase.functions();
 auth.useEmulator("http://localhost:9099");
+db.useEmulator('localhost', 8080);
+functions.useEmulator('localhost', 5001);
 
 /* eslint-disable no-new */
 // new Vue({
