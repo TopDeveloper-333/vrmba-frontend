@@ -111,6 +111,11 @@
       </div>
     </div>
 
+    <div class="row">
+			<button type="submit" class="btn btn-primary" style="margin-left:10px">
+				Update
+			</button>      
+    </div>
 
   </form>
 

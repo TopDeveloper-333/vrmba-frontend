@@ -210,6 +210,9 @@ export default {
 
 			const rooms = await query.get()
 			// this.incrementDbCounter('Fetch Rooms', rooms.size)
+
+			debugger;
+
 			this.roomsLoaded = rooms.empty || rooms.size < this.roomsPerPage
 
 			if (this.startRooms) this.endRooms = this.startRooms
