@@ -111,9 +111,9 @@ export const actions = {
     }
   },
 
-  async updateProfile({commit}, payload) {
-    const userId = payload.userId
-    const profile = payload.profile
+  async updateProfile({commit}, profile) {
+
+    console.log(profile)
 
     try {
       const { data } = await axios.post(config.apiPath + 'profile', {profile: profile})

@@ -55,6 +55,9 @@ navigator.serviceWorker.register('firebase-messaging-sw.js', {scope: 'firebase-c
     console.log(err)
   })
 
+//
+// Integrate with emulators
+//
 // const auth = firebase.auth();
 // const db = firebase.firestore();
 // const functions = firebase.functions();

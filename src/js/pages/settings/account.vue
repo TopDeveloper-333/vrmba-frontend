@@ -33,8 +33,7 @@
                 <font-awesome-icon icon="file" style="color:#00a0fe"/>                 
               </span>
             </div>
-            <textarea class="form-control" rows="3" >
-              {{profile.status}}
+            <textarea v-model="profile.status" class="form-control" rows="3">
             </textarea>
           </div>
         </div>
@@ -112,9 +111,7 @@
     </div>
 
     <div class="row">
-			<button type="submit" class="btn btn-primary" style="margin-left:10px">
-				Update
-			</button>      
+      <label class="btn btn-primary btn-simple active" style="margin-left:10px" v-on:click="onUpdateProfile">Update</label>
     </div>
 
   </form>
@@ -157,7 +154,9 @@ export default {
   },
 
   methods: {
-
+    onUpdateProfile: function(event){
+      store.dispatch('auth/updateProfile', this.profile)
+    }
   },
 
   mounted() {
