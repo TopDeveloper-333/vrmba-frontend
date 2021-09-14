@@ -8,14 +8,16 @@ import config from "../../../config"
 // state
 export const state = {
   user: null,
-  token: Cookies.get('token')
+  token: Cookies.get('token'),
+  profile: null
 }
 
 // getters
 export const getters = {
   user: state => state.user,
   token: state => state.token,
-  check: state => state.user !== null
+  check: state => state.user !== null,
+  profile: state => state.profile
 }
 
 // mutations
@@ -33,6 +35,14 @@ export const mutations = {
   [types.FETCH_USER_FAILURE] (state) {
     state.token = null
     Cookies.remove('token')
+  },
+
+  [types.FETCH_PROFILE_SUCCESS] (state, { profile }) {
+    state.profile = profile
+  },
+
+  [types.FETCH_PROFILE_FAILURE] (state) {
+    state.profile = null
   },
 
   [types.LOGOUT] (state) {
@@ -87,7 +97,30 @@ export const actions = {
     catch(err) {
       return ''
     }
+  },
 
+  async getProfile({commit}) {
+    try {
+      const { data } = await axios.get(config.apiPath + 'profile', {})
+      commit(types.FETCH_PROFILE_SUCCESS, { profile: data })
+      return data
+    }
+    catch(err) {
+      commit(types.FETCH_PROFILE_FAILURE, { profile: null })
+      return {}
+    }
+  },
+
+  async updateProfile({commit}, payload) {
+    const userId = payload.userId
+    const profile = payload.profile
+
+    try {
+      const { data } = await axios.post(config.apiPath + 'profile', {profile: profile})
+    }
+    catch(err) {
+      return {}
+    }
   },
 
   async logout ({ commit }) {

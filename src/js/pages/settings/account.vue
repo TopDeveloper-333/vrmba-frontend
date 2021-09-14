@@ -21,7 +21,7 @@
                 <font-awesome-icon icon="user" style="color:#00a0fe"/> 
               </div>
             </div>
-            <input class="form-control" id="name" type="text" value="John">
+            <input class="form-control" id="name" type="text" v-model="profile.displayName">
           </div>
         </div>
 
@@ -34,7 +34,7 @@
               </span>
             </div>
             <textarea class="form-control" rows="3" >
-              Dev-Ops Engineer at Sparkelon
+              {{profile.status}}
             </textarea>
           </div>
         </div>
@@ -52,7 +52,7 @@
                 <font-awesome-icon icon="phone-alt" style="color:#00a0fe"/> 
               </div>
             </div>
-            <input class="form-control" id="phone" type="tel" value="+316 12345678">
+            <input class="form-control" id="phone" type="tel" v-model="profile.phoneNumber">
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@
                 <font-awesome-icon icon="at" style="color:#00a0fe"/> 
               </div>
             </div>
-            <input class="form-control" id="emailAddr" type="text" value="example@gmail.com">
+            <input class="form-control" id="emailAddr" type="text" v-model="profile.email" disabled>
           </div>
         </div>
       </div>
@@ -131,16 +131,44 @@
 </style>
 
 <script>
+import store from '~/store'
+import { mapGetters } from 'vuex'
 import meeting from '../meeting/meeting.vue'
 
 export default {
-  components: { meeting },
+
+  components: { 
+    meeting 
+  },
+
+  middleware: 'auth',
+
   data() {
     return {
       toggle1: false,
       toggle2: true,
       toggle3: false
     }
+  },
+  computed: {
+    ...mapGetters({
+      profile: 'auth/profile'
+    })
+  },
+
+  methods: {
+
+  },
+
+  mounted() {
+    try {
+      store.dispatch('auth/getProfile')      
+    }
+    catch(err) {
+      alert(err)
+      console.log(err)
+    }
   }
+
 }
 </script>
