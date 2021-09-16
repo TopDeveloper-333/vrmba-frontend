@@ -4,7 +4,7 @@
     <ul class="timeline">
       <li class="timeline-inverted" v-for="timeline in timelines" v-bind:key="timeline.when">
         <div class="timeline-badge">{{timeline.dates}}</div>
-        <div class="timeline-panel" v-bind:style="{background: timeline.background, border:0}">
+        <div class="timeline-panel" v-bind:style="{background: timeline.background, border:0}" v-on:click="onSelected(timeline)">
           <div class="timeline-heading">
             <h4 class="timeline-title" v-bind:style="{color:timeline.titlecolor}"><b>{{timeline.title}}</b></h4>
             <p><small v-bind:style="{color:timeline.color}"><i class="glyphicon glyphicon-time"></i>{{timeline.duration}}</small></p>
@@ -32,6 +32,8 @@
 import store from '~/store'
 import { mapGetters } from 'vuex'
 import VCalendar from 'v-calendar'
+import ProtocolCheck from '../misc/protocolcheck'
+import config from "../../config"
 
 export default{
   components:{
@@ -49,6 +51,19 @@ export default{
     ...mapGetters({
       meetings: 'meeting/meetings'
     }),
+  },
+  methods: {
+    onSelected: function(timeline) {
+      ProtocolCheck("vrmba://" + timeline.meetingLink,
+        function () {
+            var retVal = confirm("You didn't install VRMBA Test App. Are you going to download and install it?");
+            if( retVal == true ) {
+                console.log('Download Path: ', config.ue4clientPath)
+                window.location.href = config.ue4clientPath;
+            } 
+        }
+      );
+    }
   },
   watch: {
     meetings: {
@@ -82,6 +97,7 @@ export default{
 
             timeline.when = invited[w].when
             timeline.title = invited[w].topic
+            timeline.meetingLink = invited[w].meetingLink
             timeline.duration = "Start Time: " + dd.getHours() + ":" + dd.getMinutes() + ", Duration: " + invited[w].duration
             timeline.description = invited[w].description
             timeline.background = '#2af597'
@@ -118,6 +134,7 @@ export default{
 
             timeline.when = created[ww].when
             timeline.title = created[ww].topic
+            timeline.meetingLink = created[ww].meetingLink
             timeline.duration = "Start Time: " + dd.getHours() + ":" + dd.getMinutes() + ", Duration: " + created[ww].duration
             timeline.description = created[ww].description
             timeline.background = '#f92c84'
