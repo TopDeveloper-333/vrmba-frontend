@@ -147,7 +147,7 @@ export default {
   data() {
     return {
       avatar: {
-        imageURL : "/black/img/account-1.png"
+        imageURL : "/black/img/no-avatar.png"
       },
       avatarChanged: false,
       toggle1: false,
@@ -173,14 +173,19 @@ export default {
   },
 
   methods: {
-    onUpdateProfile: function(event){
-      store.dispatch('auth/updateProfile', this.profile)
+    onUpdateProfile: async function(event){
+      await store.dispatch('auth/updateProfile', this.profile)
+      if (this.avatarChanged == true) {
+        await store.dispatch('auth/uploadAvatar', this.avatar.imageURL)
+        await store.dispatch('auth/getProfile')
+      }
     }
   },
 
-  mounted() {
+  async mounted() {
     try {
-      store.dispatch('auth/getProfile')      
+      await store.dispatch('auth/getProfile')
+      this.avatar.imageURL = this.profile.avatarURL
     }
     catch(err) {
       alert(err)

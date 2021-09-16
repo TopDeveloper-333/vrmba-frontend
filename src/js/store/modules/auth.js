@@ -113,8 +113,6 @@ export const actions = {
 
   async updateProfile({commit}, profile) {
 
-    console.log(profile)
-
     try {
       const { data } = await axios.post(config.apiPath + 'profile', {profile: profile})
     }
@@ -123,6 +121,28 @@ export const actions = {
     }
   },
 
+  async uploadAvatar({commit}, avatarURL) {
+    try {
+      let blob = await fetch(avatarURL).then(r => r.blob());
+      console.log('uploadAvatar: ', blob)
+
+      let form = new FormData()
+    
+      form.append('filename', 'profile.png')
+      form.append('mime', 'image/png')
+      form.append('file', blob)
+      
+      let formConfig = {
+        header : {
+          'Content-Type' : 'multipart/form-data'
+        }
+      }
+      const { data } = await axios.post(config.apiPath + 'avatar', form, formConfig)
+    }
+    catch(err) {
+      return {}
+    }
+  },
 
   async logout ({ commit }) {
     commit(types.LOGOUT)
