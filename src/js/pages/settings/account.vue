@@ -5,11 +5,13 @@
     <div class="row">
       <div class="col-6">
         <label for="avatar">Profile Picture</label><br>
-        <div style="display:flex">
-          <v-avatar size="150" style="margin: auto">
-            <v-img src="/black/img/account-1.png"></v-img>
-          </v-avatar>
-        </div>
+        <image-input v-model="avatar">
+          <div style="display:flex" slot="activator">
+            <v-avatar size="150" style="margin: auto">
+              <v-img :src="avatar.imageURL"></v-img>
+            </v-avatar>
+          </div>
+        </image-input>
       </div>
 
       <div class="col-6">
@@ -131,26 +133,43 @@
 import store from '~/store'
 import { mapGetters } from 'vuex'
 import meeting from '../meeting/meeting.vue'
+import ImageInput from '~/components/ImageInput.vue'
+
 
 export default {
 
   components: { 
-    meeting 
+    meeting, ImageInput
   },
 
   middleware: 'auth',
 
   data() {
     return {
+      avatar: {
+        imageURL : "/black/img/account-1.png"
+      },
+      avatarChanged: false,
       toggle1: false,
       toggle2: true,
       toggle3: false
     }
   },
+  
   computed: {
     ...mapGetters({
       profile: 'auth/profile'
     })
+  },
+
+  watch: {
+    avatar: {
+      handler: function() {
+        console.log('avatar image changed: ', this.avatar.imageURL)
+        this.avatarChanged = true
+      }, 
+      deep:true
+    }
   },
 
   methods: {

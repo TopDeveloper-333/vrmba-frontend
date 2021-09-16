@@ -123,6 +123,7 @@ export const actions = {
     }
   },
 
+
   async logout ({ commit }) {
     commit(types.LOGOUT)
   },
