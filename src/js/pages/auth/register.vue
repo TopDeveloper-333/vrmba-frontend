@@ -87,7 +87,9 @@ export default {
   methods: {
     register () {
       firebase.auth().createUserWithEmailAndPassword(this.form.email, this.form.password)
-        .then(data => {
+        .then(credential => {
+          credential.user.sendEmailVerification();
+          firebase.auth().signOut();
           this.$router.push({ name: 'register.success' });
         })
         .catch(err => {

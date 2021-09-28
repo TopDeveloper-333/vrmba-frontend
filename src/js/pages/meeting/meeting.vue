@@ -6,7 +6,7 @@
                 <label class="btn btn-primary text-md-right btn-simple active" v-on:click="onScheduleMeeting">Schedule Meeting</label>
             </card>
         </div>
-        <div class="col-lg-5">
+        <!-- <div class="col-lg-5">
             <card>
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label text-md-left">Meeting invitation link: </label>
@@ -14,7 +14,7 @@
                     <label class="btn btn-primary btn-simple active" v-on:click="onStartMeeting">Start Meeting</label>
                 </div>
             </card>
-        </div>
+        </div> -->
     </div>
 </div>
 </template>

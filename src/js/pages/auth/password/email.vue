@@ -32,6 +32,7 @@
 
 <script>
 import Form from 'vform'
+import firebase from "firebase";
 
 export default {
   middleware: 'guest',
@@ -49,11 +50,14 @@ export default {
 
   methods: {
     async send () {
-      const { data } = await this.form.post('/api/password/email')
-
-      this.status = data.status
-
-      this.form.reset()
+      firebase.auth().sendPasswordResetEmail(this.form.email)
+        .then(data => {
+          alert('Sent password reset email');
+          this.$router.push({ name: 'login', params: { } })
+        })
+        .catch(err => {
+          alert('Error happened to send reset password email');
+        })
     }
   }
 }

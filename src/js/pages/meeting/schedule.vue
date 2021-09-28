@@ -211,7 +211,7 @@ export default {
 
             try {
                 const data = await store.dispatch('meeting/schedule', {meeting})
-                this.$router.push({ name: 'meeting', params: { } })                
+                this.$router.push({ name: 'meeting', params: { } })
             }
             catch (ex) {
                 alert(ex.description)

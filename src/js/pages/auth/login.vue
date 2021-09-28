@@ -90,9 +90,13 @@ export default {
           var credential = result.credential;
           var token = credential.accessToken;
           var user = result.user;
+
+          debugger;
          
           user.getIdToken()
             .then(idToken => {
+
+              console.log(idToken);
 
               // Save the token.
               this.$store.dispatch('auth/saveToken', {
